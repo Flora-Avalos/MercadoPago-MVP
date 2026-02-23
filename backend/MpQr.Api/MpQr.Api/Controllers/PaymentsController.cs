@@ -155,11 +155,26 @@ namespace MpQr.Api.Controllers
             var externalRef = payment.ExternalReference;
             var newStatus = payment.Status;
 
+            //var currentStatusDto = await _gateway.GetStatusAsync(externalRef);
+
+            //if (currentStatusDto != null &&
+            //    currentStatusDto.Status == newStatus)
+            //    return;
             var currentStatusDto = await _gateway.GetStatusAsync(externalRef);
 
-            if (currentStatusDto != null &&
-                currentStatusDto.Status == newStatus)
-                return; // No hubo cambio real
+            if (currentStatusDto != null)
+            {
+                // 🔒 Si ya está en estado final → no procesar
+                if (currentStatusDto.Status == "approved" ||
+                    currentStatusDto.Status == "cancelled" ||
+                    currentStatusDto.Status == "rejected")
+                {
+                    return;
+                }
+
+                if (currentStatusDto.Status == newStatus)
+                    return;
+            }
 
             await _gateway.ProcessWebhookAsync(
                 externalRef,

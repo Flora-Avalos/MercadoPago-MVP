@@ -29,17 +29,21 @@ namespace MpQr.Api.Services.MercadoPago
             var request = new PreferenceRequest
             {
                 Items = new List<PreferenceItemRequest>
-        {
-            new PreferenceItemRequest
-            {
-                Title = "Pago QR",
-                Quantity = 1,
-                CurrencyId = "ARS",
-                UnitPrice = amount
-            }
-        },
+                {
+                    new PreferenceItemRequest
+                    {
+                        Title = "Pago QR",
+                        Quantity = 1,
+                        CurrencyId = "ARS",
+                        UnitPrice = amount
+                    }
+                },
                 ExternalReference = externalReference,
-                NotificationUrl = $"{_config["App:BaseUrl"]}/api/payments/webhook"
+                NotificationUrl = $"{_config["App:BaseUrl"]}/api/payments/webhook",
+
+                // ⏳ EXPIRACIÓN AUTOMÁTICA
+                Expires = true,
+                ExpirationDateTo = DateTime.UtcNow.AddMinutes(10)
             };
 
             var client = new PreferenceClient();
@@ -81,11 +85,32 @@ namespace MpQr.Api.Services.MercadoPago
             };
         }
 
+        //bloqueo duro en el gateway
         public async Task ProcessWebhookAsync(
             string externalReference,
             string status,
             string mercadoPagoPaymentId)
         {
+            var payment = await _repository.GetByExternalReferenceAsync(externalReference);
+
+            if (payment == null)
+                return;
+
+            // 🔒 BLOQUEO DE ESTADOS FINALES
+            if (payment.Status == "approved" ||
+                payment.Status == "cancelled" ||
+                payment.Status == "rejected")
+            {
+                return; // Payment ya cerrado → ignorar webhook
+            }
+
+            // 🔁 IDMPOTENCIA FUERTE
+            if (payment.MercadoPagoPaymentId == mercadoPagoPaymentId &&
+                payment.Status == status)
+            {
+                return; // Ya procesado
+            }
+
             await _repository.UpdateStatusAndMpIdAsync(
                 externalReference,
                 status,

@@ -84,3 +84,4 @@ D:\personal\Trabajo\demosMVP\mp-qr-mvp\backend\MpQr.Api\MpQr.Api\obj\Debug\net8.
 D:\personal\Trabajo\demosMVP\mp-qr-mvp\backend\MpQr.Api\MpQr.Api\obj\Debug\net8.0\MpQr.Api.genruntimeconfig.cache
 D:\personal\Trabajo\demosMVP\mp-qr-mvp\backend\MpQr.Api\MpQr.Api\obj\Debug\net8.0\ref\MpQr.Api.dll
 D:\personal\Trabajo\demosMVP\mp-qr-mvp\backend\MpQr.Api\MpQr.Api\bin\Debug\net8.0\MercadoPago.dll
+D:\personal\Trabajo\demosMVP\mp-qr-mvp\backend\MpQr.Api\MpQr.Api\obj\Debug\net8.0\MpQr.Api.sourcelink.json

@@ -77,5 +77,32 @@ namespace MpQr.Api.Persistence
             await cmd.ExecuteNonQueryAsync();
         }
 
+        //con esto bloqueamos la reutilizacion
+        public async Task<Payment?> GetByExternalReferenceAsync(string externalReference)
+        {
+            using var conn = _factory.Create();
+            using var cmd = new SqlCommand(
+                @"SELECT TOP 1 * FROM Payments WHERE ExternalReference = @ref", conn);
+
+            cmd.Parameters.AddWithValue("@ref", externalReference);
+
+            await conn.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            if (!reader.Read())
+                return null;
+
+            return new Payment
+            {
+                Id = (int)reader["Id"],
+                ExternalReference = reader["ExternalReference"].ToString()!,
+                Status = reader["Status"].ToString()!,
+                Amount = (decimal)reader["Amount"],
+                MercadoPagoPaymentId = reader["MercadoPagoPaymentId"]?.ToString(),
+                CreatedAt = (DateTime)reader["CreatedAt"],
+                UpdatedAt = reader["UpdatedAt"] as DateTime?
+            };
+        }
+
     }
 }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MpQr.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4ddcd053d8aad90611e5213f59e6a294daa21737")]
 [assembly: System.Reflection.AssemblyProductAttribute("MpQr.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MpQr.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

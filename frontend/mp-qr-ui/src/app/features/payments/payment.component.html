@@ -35,7 +35,7 @@
     <!-- Información del pago -->
     <div *ngIf="store.externalReference()" class="space-y-4 text-center">
       <!-- QR -->
-      <div *ngIf="store.qrCode()">
+      <div *ngIf="store.qrCode() && store.status() === 'pending'">
         <img
           [src]="'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=' + store.qrCode()"
           class="mx-auto rounded-xl shadow-md"
