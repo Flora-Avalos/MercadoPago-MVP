@@ -11,37 +11,81 @@ namespace MpQr.Api.Services.MercadoPago
     {
         private readonly PaymentRepository _repository;
         private readonly IConfiguration _config;
+        private readonly StorePaymentRepository _storeRepository;
 
         public MercadoPagoCheckoutApiGateway(
             PaymentRepository repository,
+            StorePaymentRepository storeRepository,
             IConfiguration config)
         {
             _repository = repository;
+            _storeRepository = storeRepository;
             _config = config;
 
             MercadoPagoConfig.AccessToken = config["MercadoPago:AccessToken"];
         }
 
-        public async Task<CreatePaymentResponseDto> CreatePaymentAsync(decimal amount)
+        //public async Task<CreatePaymentResponseDto> CreatePaymentAsync(decimal amount)
+        //{
+        //    var externalReference = Guid.NewGuid().ToString();
+
+        //    var request = new PreferenceRequest
+        //    {
+        //        Items = new List<PreferenceItemRequest>
+        //        {
+        //            new PreferenceItemRequest
+        //            {
+        //                Title = "Pago QR",
+        //                Quantity = 1,
+        //                CurrencyId = "ARS",
+        //                UnitPrice = amount
+        //            }
+        //        },
+        //        ExternalReference = externalReference,
+        //        NotificationUrl = $"{_config["App:BaseUrl"]}/api/payments/webhook",
+
+        //        // ⏳ EXPIRACIÓN AUTOMÁTICA
+        //        Expires = true,
+        //        ExpirationDateTo = DateTime.UtcNow.AddMinutes(10)
+        //    };
+
+        //    var client = new PreferenceClient();
+        //    var preference = await client.CreateAsync(request);
+
+        //    await _repository.InsertAsync(new Models.Payment
+        //    {
+        //        ExternalReference = externalReference,
+        //        Status = "pending",
+        //        Amount = amount
+        //    });
+
+        //    return new CreatePaymentResponseDto
+        //    {
+        //        ExternalReference = externalReference,
+        //        QrCode = preference.InitPoint, // 🔥 esto es la URL pagable
+        //        Status = "pending"
+        //    };
+        //}
+
+        public async Task<CreatePaymentResponseDto> CreatePaymentAsync(decimal amount, string mode = "web")
         {
-            var externalReference = Guid.NewGuid().ToString();
+            var prefix = mode == "store" ? "STORE" : "WEB";
+            var externalReference = $"{prefix}-{Guid.NewGuid()}";
 
             var request = new PreferenceRequest
             {
                 Items = new List<PreferenceItemRequest>
-                {
-                    new PreferenceItemRequest
-                    {
-                        Title = "Pago QR",
-                        Quantity = 1,
-                        CurrencyId = "ARS",
-                        UnitPrice = amount
-                    }
-                },
+        {
+            new PreferenceItemRequest
+            {
+                Title = mode == "store" ? "Pago Tienda Física" : "Compra Web",
+                Quantity = 1,
+                CurrencyId = "ARS",
+                UnitPrice = amount
+            }
+        },
                 ExternalReference = externalReference,
                 NotificationUrl = $"{_config["App:BaseUrl"]}/api/payments/webhook",
-
-                // ⏳ EXPIRACIÓN AUTOMÁTICA
                 Expires = true,
                 ExpirationDateTo = DateTime.UtcNow.AddMinutes(10)
             };
@@ -49,17 +93,34 @@ namespace MpQr.Api.Services.MercadoPago
             var client = new PreferenceClient();
             var preference = await client.CreateAsync(request);
 
-            await _repository.InsertAsync(new Models.Payment
+            var checkoutUrl = preference.InitPoint
+                  ?? preference.SandboxInitPoint;
+
+            if (mode == "store")
             {
-                ExternalReference = externalReference,
-                Status = "pending",
-                Amount = amount
-            });
+                await _storeRepository.InsertAsync(new Models.StorePayment
+                {
+                    ExternalReference = externalReference,
+                    Status = "pending",
+                    Amount = amount,
+                    IsEnabled = true,
+                    CheckoutUrl = checkoutUrl
+                });
+            }
+            else
+            {
+                await _repository.InsertAsync(new Models.Payment
+                {
+                    ExternalReference = externalReference,
+                    Status = "pending",
+                    Amount = amount
+                });
+            }
 
             return new CreatePaymentResponseDto
             {
                 ExternalReference = externalReference,
-                QrCode = preference.InitPoint, // 🔥 esto es la URL pagable
+                QrCode = checkoutUrl,
                 Status = "pending"
             };
         }
@@ -87,28 +148,58 @@ namespace MpQr.Api.Services.MercadoPago
 
         //bloqueo duro en el gateway
         public async Task ProcessWebhookAsync(
-            string externalReference,
-            string status,
-            string mercadoPagoPaymentId)
+    string externalReference,
+    string status,
+    string mercadoPagoPaymentId)
         {
-            var payment = await _repository.GetByExternalReferenceAsync(externalReference);
+            // 🔵 Si es STORE
+            if (externalReference.StartsWith("STORE-"))
+            {
+                var storePayment = await _storeRepository
+                    .GetByExternalReferenceAsync(externalReference);
+
+                if (storePayment == null)
+                    return;
+
+                // 🔒 Bloqueo estados finales
+                if (storePayment.Status == "approved" ||
+                    storePayment.Status == "cancelled" ||
+                    storePayment.Status == "rejected")
+                {
+                    return;
+                }
+
+                // Solo procesar approved
+                if (status == "approved")
+                {
+                    await _storeRepository.UpdateStatusAndMpIdAsync(
+                        externalReference,
+                        "approved",
+                        mercadoPagoPaymentId
+                    );
+                }
+
+                return;
+            }
+
+            // 🔵 Si es WEB (lógica actual)
+            var payment = await _repository
+                .GetByExternalReferenceAsync(externalReference);
 
             if (payment == null)
                 return;
 
-            // 🔒 BLOQUEO DE ESTADOS FINALES
             if (payment.Status == "approved" ||
                 payment.Status == "cancelled" ||
                 payment.Status == "rejected")
             {
-                return; // Payment ya cerrado → ignorar webhook
+                return;
             }
 
-            // 🔁 IDMPOTENCIA FUERTE
             if (payment.MercadoPagoPaymentId == mercadoPagoPaymentId &&
                 payment.Status == status)
             {
-                return; // Ya procesado
+                return;
             }
 
             await _repository.UpdateStatusAndMpIdAsync(

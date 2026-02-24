@@ -56,5 +56,25 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MpQr.Api.Controllers.StoreController",
+    "Method": "GetActivePayment",
+    "RelativePath": "api/store/active",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MpQr.Api.Controllers.StoreController",
+    "Method": "Scan",
+    "RelativePath": "api/store/scan",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

@@ -18,3 +18,51 @@
 
 23/02/2026 15:02:41
 
+
+
+23/02/2026 18:06:16
+{"action":"payment.created","api_version":"v1","data":{"id":"147456092758"},"date_created":"2026-02-23T18:06:18Z","id":129373482682,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:18:44
+{"action":"payment.created","api_version":"v1","data":{"id":"147610846118"},"date_created":"2026-02-24T20:18:43Z","id":129290889985,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:21:24
+{"action":"payment.created","api_version":"v1","data":{"id":"147610996882"},"date_created":"2026-02-24T20:20:44Z","id":129289712871,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:30:32
+{"action":"payment.created","api_version":"v1","data":{"id":"147612340588"},"date_created":"2026-02-24T20:29:50Z","id":129406883726,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:36:00
+{"action":"payment.created","api_version":"v1","data":{"id":"147612989752"},"date_created":"2026-02-24T20:35:59Z","id":129291468763,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:36:42
+{"action":"payment.created","api_version":"v1","data":{"id":"146910217113"},"date_created":"2026-02-24T20:36:41Z","id":129291449161,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:37:07
+{"action":"payment.created","api_version":"v1","data":{"id":"146910277423"},"date_created":"2026-02-24T20:37:07Z","id":129291488793,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 20:46:41
+{"action":"payment.created","api_version":"v1","data":{"id":"147614239908"},"date_created":"2026-02-24T20:45:59Z","id":129291746023,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 21:01:48
+{"action":"payment.created","api_version":"v1","data":{"id":"146913599339"},"date_created":"2026-02-24T21:01:47Z","id":129292182845,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 21:24:15
+
+
+
+24/02/2026 21:32:03
+{"action":"payment.created","api_version":"v1","data":{"id":"147620779850"},"date_created":"2026-02-24T21:32:03Z","id":129292977777,"live_mode":true,"type":"payment","user_id":"3199955294"}
+
+
+24/02/2026 21:45:49
+{"action":"payment.created","api_version":"v1","data":{"id":"147622761420"},"date_created":"2026-02-24T21:45:49Z","id":129293440889,"live_mode":true,"type":"payment","user_id":"3199955294"}

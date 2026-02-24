@@ -91,6 +91,30 @@
           }
         }
       }
+    },
+    "/api/store/active": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/store/scan": {
+      "get": {
+        "tags": [
+          "Store"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -101,6 +125,10 @@
           "amount": {
             "type": "number",
             "format": "double"
+          },
+          "mode": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

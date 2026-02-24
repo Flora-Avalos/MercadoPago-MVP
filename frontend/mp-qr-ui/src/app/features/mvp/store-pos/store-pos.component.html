@@ -1,0 +1,59 @@
+<div class="min-h-screen bg-gray-100 p-8">
+  <h1 class="text-3xl font-bold mb-8 text-center">POS Tienda Física</h1>
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div
+      *ngFor="let p of products()"
+      class="bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-4"
+    >
+      <h2 class="text-xl font-semibold">
+        {{ p.name }}
+      </h2>
+
+      <p class="text-gray-600">Precio: ${{ p.price }}</p>
+
+      <div class="flex items-center gap-4">
+        <button class="bg-red-500 text-white px-3 py-1 rounded-lg" (click)="decrease(p)">-</button>
+
+        <span class="text-lg font-bold">
+          {{ p.qty }}
+        </span>
+
+        <button class="bg-green-500 text-white px-3 py-1 rounded-lg" (click)="increase(p)">
+          +
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10 bg-white p-6 rounded-2xl shadow-lg">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <!-- 🔵 COLUMNA IZQUIERDA -->
+      <div>
+        <p class="text-xl">
+          Total:
+          <span class="font-bold text-green-600"> ${{ total() }} </span>
+        </p>
+
+        <button
+          class="mt-6 w-full bg-green-600 text-white py-3 rounded-xl disabled:bg-gray-400"
+          [disabled]="total() === 0 || loading"
+          (click)="cobrar()"
+        >
+          Cobrar
+        </button>
+      </div>
+
+      <!-- 🟢 COLUMNA DERECHA (QR) -->
+      <div class="flex flex-col items-center">
+        <qrcode [qrdata]="qrUrl" [width]="220" [errorCorrectionLevel]="'M'"> </qrcode>
+
+        <div *ngIf="!qrEnabled()" class="mt-4 text-red-600 font-semibold">QR no habilitado</div>
+
+        <div *ngIf="qrEnabled()" class="mt-4 text-green-600 font-semibold">
+          QR habilitado. El cliente puede escanear.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

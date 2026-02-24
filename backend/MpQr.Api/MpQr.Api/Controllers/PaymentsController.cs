@@ -27,10 +27,18 @@ namespace MpQr.Api.Controllers
         // ===============================
         // CREATE PAYMENT
         // ===============================
+        //[HttpPost]
+        //public async Task<IActionResult> Create(CreatePaymentRequestDto dto)
+        //{
+        //    var result = await _gateway.CreatePaymentAsync(dto.Amount);
+        //    return Ok(result);
+        //}
         [HttpPost]
         public async Task<IActionResult> Create(CreatePaymentRequestDto dto)
         {
-            var result = await _gateway.CreatePaymentAsync(dto.Amount);
+            var mode = dto.Mode ?? "web";
+
+            var result = await _gateway.CreatePaymentAsync(dto.Amount, mode);
             return Ok(result);
         }
 

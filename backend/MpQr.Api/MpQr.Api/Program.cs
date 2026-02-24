@@ -28,6 +28,7 @@ builder.Services.AddScoped<SqlConnectionFactory>();
 builder.Services.AddScoped<PaymentRepository>();
 builder.Services.AddScoped<IPaymentGateway, MercadoPagoCheckoutApiGateway>();
 builder.Services.AddScoped<MercadoPagoSignatureValidator>();
+builder.Services.AddScoped<StorePaymentRepository>();
 
 
 
