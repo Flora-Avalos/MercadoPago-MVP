@@ -16,10 +16,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
-              .SetIsOriginAllowed(_ => true);
+        policy.WithOrigins(
+            "http://localhost:4200",
+            "https://mercadopago1.netlify.app"
+            )
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+              
     });
 });
 
@@ -40,9 +44,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
 app.UseRouting();
+
 app.UseCors("AllowAll");
+
+app.UseHttpsRedirection();
+
 app.UseAuthorization();
 
 app.MapControllers();

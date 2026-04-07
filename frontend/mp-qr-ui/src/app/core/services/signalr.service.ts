@@ -9,7 +9,7 @@ export class SignalRService {
 
   startConnection(onUpdate: (data: any) => void) {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('https://timmy-uncarpeted-miki.ngrok-free.dev/paymentHub', {
+      .withUrl('https://mercadopago-mvp.onrender.com/paymentHub', {
         withCredentials: true,
       })
       .withAutomaticReconnect()

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\personal\\Trabajo\\demosMVP\\mp-qr-mvp\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj": {}
+    "C:\\Team Higores\\Apis\\MpApiCopia\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj": {}
   },
   "projects": {
-    "D:\\personal\\Trabajo\\demosMVP\\mp-qr-mvp\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj": {
+    "C:\\Team Higores\\Apis\\MpApiCopia\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\personal\\Trabajo\\demosMVP\\mp-qr-mvp\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj",
+        "projectUniqueName": "C:\\Team Higores\\Apis\\MpApiCopia\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj",
         "projectName": "MpQr.Api",
-        "projectPath": "D:\\personal\\Trabajo\\demosMVP\\mp-qr-mvp\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj",
-        "packagesPath": "C:\\Users\\leoni\\.nuget\\packages\\",
-        "outputPath": "D:\\personal\\Trabajo\\demosMVP\\mp-qr-mvp\\backend\\MpQr.Api\\MpQr.Api\\obj\\",
+        "projectPath": "C:\\Team Higores\\Apis\\MpApiCopia\\backend\\MpQr.Api\\MpQr.Api\\MpQr.Api.csproj",
+        "packagesPath": "C:\\Users\\flora\\.nuget\\packages\\",
+        "outputPath": "C:\\Team Higores\\Apis\\MpApiCopia\\backend\\MpQr.Api\\MpQr.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\leoni\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\flora\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,7 +25,7 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
